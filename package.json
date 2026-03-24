@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-hw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oleksii996/nodejs-hw.git"
+  },
+  "keywords": [],
+  "author": "oleksii_ponomarenko <alexponomarenko996@gmail.com>",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Oleksii996/nodejs-hw/issues"
+  },
+  "homepage": "https://github.com/Oleksii996/nodejs-hw#readme"
+}
