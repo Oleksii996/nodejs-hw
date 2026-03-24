@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Oleksii996/nodejs-hw/issues"
   },
-  "homepage": "https://github.com/Oleksii996/nodejs-hw#readme"
+  "homepage": "https://github.com/Oleksii996/nodejs-hw#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }
