@@ -1,8 +1,10 @@
 // src/server.js
 import express from 'express';
+import 'dotenv/config';
 import cors from 'cors';
 import pino from 'pino-http';
-import 'dotenv/config';
+
+import { connectMongoDB } from './db/connectMongoDB.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -55,6 +57,9 @@ app.use((err, req, res, next) => {
       : `${err.message}`,
   });
 });
+
+// підключення до MongoDB
+await connectMongoDB();
 
 // Запуск сервера - окремий пункт, щоб не блокувати інші операції
 app.listen(PORT, () => {
