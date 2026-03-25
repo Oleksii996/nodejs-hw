@@ -69,14 +69,21 @@ app.listen(PORT, () => {
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
+
 import { connectMongoDB } from './db/connectMongoDB.js';
-import { Student } from './models/student.js';
+import { logger } from './middleware/logger.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
-app.use(express.json());
-app.use(cors());
+// Глобальні middleware
+app.use(logger); // 1. Логер першим — бачить усі запити
+app.use(express.json()); // 2. Парсинг JSON-тіла
+app.use(cors()); // 3. Дозвіл для запитів з інших доменів
+
+import { Student } from './models/student.js';
 
 // GET /students — список усіх студентів
 app.get('/students', async (req, res) => {
@@ -94,23 +101,11 @@ app.get('/students/:studentId', async (req, res) => {
   res.status(200).json(student);
 });
 
-// Middleware 404
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+// 404 — якщо маршрут не знайдено
+app.use(notFoundHandler);
 
-// Middleware для обробки помилок
-app.use((err, req, res, next) => {
-  console.error(err);
-
-  const isProd = process.env.NODE_ENV === 'production';
-
-  res.status(500).json({
-    message: isProd
-      ? 'Something went wrong. Please try again later.'
-      : err.message,
-  });
-});
+// Error — якщо під час запиту виникла помилка
+app.use(errorHandler);
 
 await connectMongoDB();
 
