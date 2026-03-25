@@ -7,55 +7,53 @@ export const getAllNotes = async (req, res) => {
   res.status(200).json(notes);
 };
 
-// Отримати одного студента за id
-export const getStudentById = async (req, res) => {
-  const { notetId } = req.params;
-  const note = await Note.findById(noteId);
-
-  if (!student) {
-    return res.status(404).json({ message: 'Notes not found' });
-  }
-
-  if (!student) {
-    throw createHttpError(404, 'Student not found');
-  }
-
-  res.status(200).json(student);
-};
-
-// Створити нового студента
-export const createStudent = async (req, res) => {
-  const student = await Student.create(req.body);
-  res.status(201).json(student);
-};
-
-// Видалити студента
-export const deleteStudent = async (req, res) => {
-  const { studentId } = req.params;
-  const student = await Student.findOneAndDelete({
-    _id: studentId,
+// Отримати нотатку за id
+export const getNoteById = async (req, res) => {
+  const { noteId } = req.params;
+  const note = await Note.findById({
+    _id: noteId,
   });
 
-  if (!student) {
-    throw createHttpError(404, 'Student not found');
+  if (!note) {
+    throw createHttpError(404, 'Note not found');
   }
 
-  res.status(200).json(student);
+  res.status(200).json(note);
 };
 
-// Оновити студента
-export const updateStudent = async (req, res) => {
-  const { studentId } = req.params;
+// Створити нову нотатку
+export const createNote = async (req, res) => {
+  const note = await Note.create(req.body);
+  res.status(201).json(note);
+};
 
-  const student = await Student.findOneAndUpdate(
-    { _id: studentId }, // Шукаємо по id
+// Видалити нотатку
+export const deleteNote = async (req, res) => {
+  const { noteId } = req.params;
+  const note = await Note.findOneAndDelete({
+    _id: noteId,
+  });
+
+  if (!note) {
+    throw createHttpError(404, 'Note not found');
+  }
+
+  res.status(200).json(note);
+};
+
+// Оновити нотатку
+export const updateNote = async (req, res) => {
+  const { noteId } = req.params;
+
+  const note = await Note.findOneAndUpdate(
+    { _id: noteId }, // Шукаємо по id
     req.body,
     { returnDocument: 'after' }, // повертаємо оновлений документ
   );
 
-  if (!student) {
-    throw createHttpError(404, 'Student not found');
+  if (!note) {
+    throw createHttpError(404, 'Note not found');
   }
 
-  res.status(200).json(student);
+  res.status(200).json(note);
 };
