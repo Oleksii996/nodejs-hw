@@ -1,6 +1,6 @@
-import pino from 'pino-http';
+import PinoHttp from 'pino-http';
 
-export const logger = pino({
+export const logger = PinoHttp({
   level: 'info',
   transport: {
     target: 'pino-pretty',
