@@ -75,6 +75,8 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
+import studentsRoutes from './routes/studentsRoutes.js';
+
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
@@ -83,28 +85,11 @@ app.use(logger); // 1. Логер першим — бачить усі запи�
 app.use(express.json()); // 2. Парсинг JSON-тіла
 app.use(cors()); // 3. Дозвіл для запитів з інших доменів
 
-import { Student } from './models/student.js';
+// підключаємо групу маршрутів студента
+app.use(studentsRoutes);
 
-// GET /students — список усіх студентів
-app.get('/students', async (req, res) => {
-  const students = await Student.find();
-  res.status(200).json(students);
-});
-
-// GET /students/:studentId — один студент за id
-app.get('/students/:studentId', async (req, res) => {
-  const { studentId } = req.params;
-  const student = await Student.findById(studentId);
-  if (!student) {
-    return res.status(404).json({ message: 'Student not found' });
-  }
-  res.status(200).json(student);
-});
-
-// 404 — якщо маршрут не знайдено
+// 404 і обробник помилок — наприкінці ланцюжка
 app.use(notFoundHandler);
-
-// Error — якщо під час запиту виникла помилка
 app.use(errorHandler);
 
 await connectMongoDB();
