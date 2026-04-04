@@ -7,6 +7,7 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { logger } from './middleware/logger.js';
+import { errors } from 'celebrate';
 
 import notesRoutes from './routes/notesRoutes.js';
 
@@ -23,6 +24,7 @@ app.use(notesRoutes);
 
 // 404 і обробник помилок — наприкінці ланцюжка
 app.use(notFoundHandler);
+app.use(errors());
 app.use(errorHandler);
 
 await connectMongoDB();
