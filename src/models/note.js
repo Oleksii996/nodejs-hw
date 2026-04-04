@@ -12,11 +12,6 @@ const noteSchema = new Schema(
       default: '',
       trim: true,
     },
-    tag: {
-      type: String,
-      default: 'Todo',
-      enum: TAGS,
-    },
   },
   {
     timestamps: true,
