@@ -1,8 +1,10 @@
-// src/controllers/authController.js
-
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { User } from '../models/user.js';
+
+// Новий імпорт
+import { createSession, setSessionCookies } from '../services/auth.js';
+import { Session } from '../models/session.js';
 
 export const registerUser = async (req, res) => {
   const { email, password } = req.body;
@@ -10,14 +12,20 @@ export const registerUser = async (req, res) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw createHttpError(400, 'Email in use');
-  } // Хешуємо пароль
+  }
+  // Хешуємо пароль
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  const hashedPassword = await bcrypt.hash(password, 10); // Створюємо користувача
-
+  // Створюємо користувача
   const newUser = await User.create({
     email,
     password: hashedPassword,
-  }); // Відправляємо дані користувача (без пароля) у відповіді
+  });
+
+  // Створюємо нову сесію
+  const newSession = await createSession(newUser._id);
+  // 2. Викликаємо, передаємо об'єкт відповіді та сесію
+  setSessionCookies(res, newSession);
 
   res.status(201).json(newUser);
 };
@@ -36,6 +44,14 @@ export const loginUser = async (req, res) => {
   if (!isValidPassword) {
     throw createHttpError(401, 'Invalid credentials');
   }
+
+  // Видаляємо стару сесію користувача
+  await Session.deleteOne({ userId: user._id });
+
+  // Створюємо нову сесію
+  const newSession = await createSession(user._id);
+  // 3. Викликаємо, передаємо об'єкт відповіді та сесію
+  setSessionCookies(res, newSession);
 
   res.status(200).json(user);
 };

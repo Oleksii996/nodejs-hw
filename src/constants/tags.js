@@ -1,5 +1,3 @@
-// src/constants/tags.js
-
 export const TAGS = [
   'Work',
   'Personal',
@@ -10,5 +8,5 @@ export const TAGS = [
   'Finance',
   'Health',
   'Important',
-  'Todo'
+  'Todo',
 ];
