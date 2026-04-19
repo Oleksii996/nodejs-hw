@@ -10,9 +10,7 @@ import { logger } from './middleware/logger.js';
 import { errors } from 'celebrate';
 
 import notesRoutes from './routes/notesRoutes.js';
-
 import authRoutes from './routes/authRoutes.js';
-import studentsRoutes from './routes/studentsRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -23,6 +21,7 @@ app.use(express.json()); // 2. Парсинг JSON-тіла
 app.use(cors()); // 3. Дозвіл для запитів з інших доменів
 
 // підключаємо групу маршрутів студента
+app.use(authRoutes);
 app.use(notesRoutes);
 
 // 404 і обробник помилок — наприкінці ланцюжка
@@ -31,9 +30,6 @@ app.use(errors());
 app.use(errorHandler);
 
 await connectMongoDB();
-
-app.use(authRoutes);
-app.use(studentsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
