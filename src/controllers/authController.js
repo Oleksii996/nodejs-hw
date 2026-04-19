@@ -21,3 +21,21 @@ export const registerUser = async (req, res) => {
 
   res.status(201).json(newUser);
 };
+
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Перевіряємо чи користувач з такою поштою існує
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createHttpError(401, 'Invalid credentials');
+  }
+
+  // Порівнюємо хеші паролів
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    throw createHttpError(401, 'Invalid credentials');
+  }
+
+  res.status(200).json(user);
+};
