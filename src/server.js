@@ -11,6 +11,7 @@ import { errors } from 'celebrate';
 
 import notesRoutes from './routes/notesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 import cookieParser from 'cookie-parser';
 
@@ -23,9 +24,10 @@ app.use(express.json()); // 2. Парсинг JSON-тіла
 app.use(cors()); // 3. Дозвіл для запитів з інших доменів
 app.use(cookieParser());
 
-// підключаємо групу маршрутів студента
-app.use(authRoutes);
+// підключаємо групу маршрутів студента/нотаток
 app.use(notesRoutes);
+app.use(authRoutes);
+app.use(userRoutes);
 
 // 404 і обробник помилок — наприкінці ланцюжка
 app.use(notFoundHandler);
