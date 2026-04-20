@@ -33,6 +33,7 @@
     "cost": "^1.2.3",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "handlebars": "^4.7.9",
     "http-errors": "^2.0.1",
     "import": "^0.0.6",
     "joi": "^18.1.2",
